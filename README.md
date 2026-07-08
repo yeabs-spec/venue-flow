@@ -118,6 +118,10 @@ Use these credentials to log in as the seeded administrator after the first star
 - Dedicated room detail pages with images and richer descriptions
 - Auto-seeded sample data for quick demonstration
 
+## Repo Link
+
+- github repo link : https://github.com/yeabs-spec/venue-flow 
+
 ## Notes
 
 - Log files are written to `logs/access.log`, `logs/app.log`, and `logs/error.log`
