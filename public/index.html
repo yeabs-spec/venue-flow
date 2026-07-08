@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VenueFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a href="#home" class="brandmark">
+          <span class="brandmark-dot"></span>
+          <span>VenueFlow</span>
+        </a>
+
+        <nav class="topnav">
+          <button type="button" class="topnav-link" data-route="home">Home</button>
+          <button type="button" class="topnav-link" data-route="rooms">Rooms</button>
+          <button type="button" class="topnav-link hidden" id="dashboardNavButton" data-route="dashboard">Dashboard</button>
+          <button type="button" class="topnav-link hidden" id="adminNavButton" data-route="admin">Admin</button>
+        </nav>
+
+        <div class="topbar-actions">
+          <span class="role-badge hidden" id="topbarRoleBadge"></span>
+          <button type="button" class="ghost-button hidden" id="topbarLogoutButton">Log out</button>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <section class="view" id="homeView">
+          <div class="hero-grid">
+            <section class="hero-card hero-copy-card">
+              <p class="eyebrow">Meeting Room Booking</p>
+              <h1>Professional room scheduling for teams that move fast.</h1>
+              <p class="hero-copy">
+                Browse meeting spaces, review room details, and submit booking requests through a focused, approval-ready workflow.
+              </p>
+              <div class="hero-actions">
+                <button type="button" class="primary-button" data-route="rooms">Explore Rooms</button>
+                <button type="button" class="ghost-button" id="heroDashboardButton">Open Dashboard</button>
+              </div>
+              <div class="overview-strip">
+                <article class="overview-card">
+                  <span>Rooms</span>
+                  <strong id="overviewRoomCount">0</strong>
+                </article>
+                <article class="overview-card">
+                  <span>Available</span>
+                  <strong id="overviewAvailableCount">0</strong>
+                </article>
+                <article class="overview-card">
+                  <span>Flow</span>
+                  <strong>Approved</strong>
+                </article>
+              </div>
+            </section>
+
+            <section class="hero-card access-card">
+              <div id="guestAccessPanel">
+                <div class="access-header">
+                  <h2>Access</h2>
+                  <div class="auth-switch" role="tablist" aria-label="Authentication mode">
+                    <button type="button" id="showLoginButton" class="auth-switch-button is-active">Sign in</button>
+                    <button type="button" id="showRegisterButton" class="auth-switch-button">Create account</button>
+                  </div>
+                </div>
+
+                <div class="access-grid">
+                  <div class="credential-card">
+                    <span class="credential-label">Admin account</span>
+                    <strong>admin@venueflow.local</strong>
+                    <strong>Admin123!</strong>
+                  </div>
+
+                  <div class="auth-form-stage">
+                    <form id="loginForm" class="stack auth-form-card">
+                      <h3>Sign in</h3>
+                      <input name="email" type="email" placeholder="Email address" required />
+                      <input name="password" type="password" placeholder="Password" required />
+                      <button type="submit" class="primary-button">Login</button>
+                    </form>
+
+                    <form id="registerForm" class="stack auth-form-card hidden">
+                      <h3>Create account</h3>
+                      <input name="fullName" placeholder="Full name" required />
+                      <input name="email" type="email" placeholder="Email address" required />
+                      <input name="password" type="password" placeholder="Password" required />
+                      <button type="submit" class="primary-button">Register</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div id="accountAccessPanel" class="hidden">
+                <div class="account-card">
+                  <span class="credential-label">Signed in</span>
+                  <h3 id="accountPanelTitle">Welcome back</h3>
+                  <p id="accountPanelText">Your room booking workspace is ready.</p>
+                  <div class="hero-actions">
+                    <button type="button" class="primary-button" id="accountPrimaryButton">Go to dashboard</button>
+                    <button type="button" class="ghost-button" data-route="rooms">View rooms</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view hidden" id="roomsView">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Rooms</p>
+              <h2>Meeting spaces</h2>
+            </div>
+            <p class="section-copy">Explore room capacity, amenities, and availability before you book.</p>
+          </div>
+          <div class="room-grid" id="roomsCatalog"></div>
+        </section>
+
+        <section class="view hidden" id="roomDetailView">
+          <button type="button" class="ghost-button back-button" id="roomDetailBackButton">Back to rooms</button>
+          <div id="roomDetailContent"></div>
+        </section>
+
+        <section class="view hidden" id="memberDashboardView">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Dashboard</p>
+              <h2 id="memberDashboardTitle">My dashboard</h2>
+            </div>
+            <p class="section-copy">Create requests, follow approvals, and keep your schedule organized.</p>
+          </div>
+
+          <div class="stats-grid" id="memberStatsGrid"></div>
+
+          <div class="dashboard-grid-two">
+            <section class="panel">
+              <div class="panel-header">
+                <h3>Book a room</h3>
+              </div>
+              <form id="bookingForm" class="stack">
+                <select name="roomId" id="roomSelect" required></select>
+                <input name="title" placeholder="Meeting title" required />
+                <input name="bookingDate" type="date" required />
+                <div class="time-row">
+                  <input name="startTime" type="time" required />
+                  <input name="endTime" type="time" required />
+                </div>
+                <input name="attendees" type="number" min="1" max="500" placeholder="Attendees" required />
+                <textarea name="purpose" rows="5" placeholder="Meeting agenda or purpose" required></textarea>
+                <button type="submit" class="primary-button">Submit request</button>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h3>My bookings</h3>
+              </div>
+              <div id="myBookingsTable" class="table-shell"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view hidden" id="adminDashboardView">
+          <div class="section-header">
+            <div>
+              <p class="eyebrow">Admin</p>
+              <h2>Operations dashboard</h2>
+            </div>
+            <p class="section-copy">Manage room inventory and moderate booking traffic from one place.</p>
+          </div>
+
+          <div class="stats-grid" id="adminStatsGrid"></div>
+
+          <div class="dashboard-grid-two">
+            <section class="panel">
+              <div class="panel-header">
+                <h3>Room details</h3>
+              </div>
+              <form id="roomForm" class="stack">
+                <input type="hidden" name="roomId" />
+                <input name="name" placeholder="Room name" required />
+                <input name="location" placeholder="Location" required />
+                <input name="capacity" type="number" min="1" max="500" placeholder="Capacity" required />
+                <input name="imageUrl" placeholder="Image URL or local asset path" required />
+                <textarea name="description" rows="4" placeholder="Room description" required></textarea>
+                <input name="amenities" placeholder="Amenities" required />
+                <select name="status">
+                  <option value="available">Available</option>
+                  <option value="maintenance">Maintenance</option>
+                </select>
+                <div class="button-row">
+                  <button type="submit" class="primary-button">Save room</button>
+                  <button type="button" id="resetRoomFormButton" class="ghost-button">Clear</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h3>Room library</h3>
+              </div>
+              <div class="admin-room-list" id="adminRoomList"></div>
+            </section>
+          </div>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Booking approvals</h3>
+            </div>
+            <div id="adminBookingsTable" class="table-shell"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>
