@@ -55,8 +55,6 @@ venueflow/
    npm install
    ```
 
-   If you typed `nmp install`, use `npm install` instead.
-
 2. Copy environment variables:
 
    ```bash
