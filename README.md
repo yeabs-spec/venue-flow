@@ -124,5 +124,4 @@ Use these credentials to log in as the seeded administrator after the first star
 
 - Log files are written to `logs/access.log`, `logs/app.log`, and `logs/error.log`
 - The frontend is intentionally separated from server-side templating and communicates with the backend via `fetch`
-- The current implementation uses SQLite for easy local setup while still satisfying the relational database requirement
-- The product scope is intentionally focused on meeting-room booking so the workflows stay specific and coherent
+- The current implementation uses SQLite for easy local setup
